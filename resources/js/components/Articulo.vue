@@ -4,13 +4,13 @@
             Articulos
         </h1>
         <!-- Button trigger modal -->
-        <button @click="abrirModal();" type="button" class="btn btn-primary" >
+        <button @click="modificar=false; abrirModal();" type="button" class="btn btn-primary" >
         Agregar Articulo
         </button>
 
         <!-- Modal -->
-        <div class="modal fade" :class="{mostrar:modal}" >
-        <div class="modal-dialog" role="document">
+        <div class="modal" :class="{mostrar:modal}" >
+        <div class="modal-dialog">
             <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel">{{  tituloModal }}</h5>
@@ -19,10 +19,24 @@
                 </button>
             </div>
             <div class="modal-body">
-                ...
+                <div class="form-group" >
+                        <label for="">Articulo</label>
+                        <input v-model="articulo.nombre"  class="form-control" type="text" name="nombre" id="nombre" placeholder="nombre" > 
+
+                </div>
+                <div class="form-group" >
+                        <label for="">descripcion</label>
+                        <input v-model="articulo.descripcion"  class="form-control" type="text" name="descripcion" id="descripcion" placeholder="Descripcion del articulo" >      
+                </div>
+
+                <div class="form-group" >
+                        <label for="">stock</label>
+                        <input  v-model="articulo.stock" class="form-control" type="number" name="stock" id="stock" placeholder="stock del articulo" >      
+                </div>
+                
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" @click="cerrarModal();" class="btn btn-secondary" data-dismiss="modal">Close</button>
                 <button type="button" class="btn btn-primary">Save changes</button>
             </div>
             </div>
@@ -46,10 +60,10 @@
                 <th >{{ art.descripcion }}</th>
                 <th >{{ art.stock }}</th>      
                     <th>
-                        <button   class="btn btn-warning">Editar</button> 
+                        <button @click=" modificar=true; abrirModal(art)"  class="btn btn-warning">Editar</button>         
                     </th>
                     <th  > 
-                    <button @click="eliminar(art.id)"  class="btn btn-danger">Eliminar</button>         
+                    <button  @click="eliminar(art.id)"  class="btn btn-danger">Eliminar</button>         
                     </th>
                 </tr>
             </tbody>
@@ -60,6 +74,12 @@
     export default {
       data(){
           return {
+              articulo:{
+                  nombre:"nombre del articulo",
+                  descripcion:"descripcion del articulo",
+                  stock:1
+              },
+              modificar:true,
               modal:0,
               tituloModal:'',
               articulos: [], 
@@ -74,8 +94,19 @@
               const api = await axios.delete('/articulos/'+id);              
                 this.listar();
           },
-        abrirModal() {
+        abrirModal(data={}) {
                 this.modal = 1;
+                if(this.modificar){
+                    this.tituloModal= "Modificar articulo";
+                    this.articulo.nombre = data.nombre;
+                    this.articulo.descripcion = data.descripcion;
+                    this.articulo.stock = data.stock;                    
+                }else{
+                    this.tituloModal= "Crear articulo";
+                    this.articulo.nombre = "";
+                    this.articulo.descripcion = "";
+                    this.articulo.stock = "";     
+                }
             },
         cerrarModal(){
                 this.modal = 0;

@@ -1922,9 +1922,29 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
+      articulo: {
+        nombre: "nombre del articulo",
+        descripcion: "descripcion del articulo",
+        stock: 1
+      },
+      modificar: true,
       modal: 0,
       tituloModal: '',
       articulos: []
@@ -1981,7 +2001,20 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       }))();
     },
     abrirModal: function abrirModal() {
+      var data = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
       this.modal = 1;
+
+      if (this.modificar) {
+        this.tituloModal = "Modificar articulo";
+        this.articulo.nombre = data.nombre;
+        this.articulo.descripcion = data.descripcion;
+        this.articulo.stock = data.stock;
+      } else {
+        this.tituloModal = "Crear articulo";
+        this.articulo.nombre = "";
+        this.articulo.descripcion = "";
+        this.articulo.stock = "";
+      }
     },
     cerrarModal: function cerrarModal() {
       this.modal = 0;
@@ -38683,15 +38716,16 @@ var render = function() {
         attrs: { type: "button" },
         on: {
           click: function($event) {
-            return _vm.abrirModal()
+            _vm.modificar = false
+            _vm.abrirModal()
           }
         }
       },
       [_vm._v("\n    Agregar Articulo\n    ")]
     ),
     _vm._v(" "),
-    _c("div", { staticClass: "modal fade", class: { mostrar: _vm.modal } }, [
-      _c("div", { staticClass: "modal-dialog", attrs: { role: "document" } }, [
+    _c("div", { staticClass: "modal", class: { mostrar: _vm.modal } }, [
+      _c("div", { staticClass: "modal-dialog" }, [
         _c("div", { staticClass: "modal-content" }, [
           _c("div", { staticClass: "modal-header" }, [
             _c(
@@ -38731,16 +38765,127 @@ var render = function() {
           ]),
           _vm._v(" "),
           _c("div", { staticClass: "modal-body" }, [
-            _vm._v("\n            ...\n        ")
+            _c("div", { staticClass: "form-group" }, [
+              _c("label", { attrs: { for: "" } }, [_vm._v("Articulo")]),
+              _vm._v(" "),
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.articulo.nombre,
+                    expression: "articulo.nombre"
+                  }
+                ],
+                staticClass: "form-control",
+                attrs: {
+                  type: "text",
+                  name: "nombre",
+                  id: "nombre",
+                  placeholder: "nombre"
+                },
+                domProps: { value: _vm.articulo.nombre },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.$set(_vm.articulo, "nombre", $event.target.value)
+                  }
+                }
+              })
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "form-group" }, [
+              _c("label", { attrs: { for: "" } }, [_vm._v("descripcion")]),
+              _vm._v(" "),
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.articulo.descripcion,
+                    expression: "articulo.descripcion"
+                  }
+                ],
+                staticClass: "form-control",
+                attrs: {
+                  type: "text",
+                  name: "descripcion",
+                  id: "descripcion",
+                  placeholder: "Descripcion del articulo"
+                },
+                domProps: { value: _vm.articulo.descripcion },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.$set(_vm.articulo, "descripcion", $event.target.value)
+                  }
+                }
+              })
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "form-group" }, [
+              _c("label", { attrs: { for: "" } }, [_vm._v("stock")]),
+              _vm._v(" "),
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.articulo.stock,
+                    expression: "articulo.stock"
+                  }
+                ],
+                staticClass: "form-control",
+                attrs: {
+                  type: "number",
+                  name: "stock",
+                  id: "stock",
+                  placeholder: "stock del articulo"
+                },
+                domProps: { value: _vm.articulo.stock },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.$set(_vm.articulo, "stock", $event.target.value)
+                  }
+                }
+              })
+            ])
           ]),
           _vm._v(" "),
-          _vm._m(0)
+          _c("div", { staticClass: "modal-footer" }, [
+            _c(
+              "button",
+              {
+                staticClass: "btn btn-secondary",
+                attrs: { type: "button", "data-dismiss": "modal" },
+                on: {
+                  click: function($event) {
+                    return _vm.cerrarModal()
+                  }
+                }
+              },
+              [_vm._v("Close")]
+            ),
+            _vm._v(" "),
+            _c(
+              "button",
+              { staticClass: "btn btn-primary", attrs: { type: "button" } },
+              [_vm._v("Save changes")]
+            )
+          ])
         ])
       ])
     ]),
     _vm._v(" "),
     _c("table", { staticClass: "table table-striped" }, [
-      _vm._m(1),
+      _vm._m(0),
       _vm._v(" "),
       _c(
         "tbody",
@@ -38754,7 +38899,21 @@ var render = function() {
             _vm._v(" "),
             _c("th", [_vm._v(_vm._s(art.stock))]),
             _vm._v(" "),
-            _vm._m(2, true),
+            _c("th", [
+              _c(
+                "button",
+                {
+                  staticClass: "btn btn-warning",
+                  on: {
+                    click: function($event) {
+                      _vm.modificar = true
+                      _vm.abrirModal(art)
+                    }
+                  }
+                },
+                [_vm._v("Editar")]
+              )
+            ]),
             _vm._v(" "),
             _c("th", [
               _c(
@@ -38782,27 +38941,6 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "modal-footer" }, [
-      _c(
-        "button",
-        {
-          staticClass: "btn btn-secondary",
-          attrs: { type: "button", "data-dismiss": "modal" }
-        },
-        [_vm._v("Close")]
-      ),
-      _vm._v(" "),
-      _c(
-        "button",
-        { staticClass: "btn btn-primary", attrs: { type: "button" } },
-        [_vm._v("Save changes")]
-      )
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
     return _c("thead", { staticClass: "thead-light" }, [
       _c("tr", [
         _c("th", { attrs: { scope: "col" } }, [_vm._v("#")]),
@@ -38819,14 +38957,6 @@ var staticRenderFns = [
           [_vm._v("Operaciones")]
         )
       ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("th", [
-      _c("button", { staticClass: "btn btn-warning" }, [_vm._v("Editar")])
     ])
   }
 ]
