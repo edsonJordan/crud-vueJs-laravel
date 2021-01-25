@@ -37,7 +37,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" @click="cerrarModal();" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save changes</button>
+                <button @click="guardar();" type="button" class="btn btn-primary">Guardar</button>
             </div>
             </div>
         </div>
@@ -60,7 +60,7 @@
                 <th >{{ art.descripcion }}</th>
                 <th >{{ art.stock }}</th>      
                     <th>
-                        <button @click=" modificar=true; abrirModal(art)"  class="btn btn-warning">Editar</button>         
+                        <button @click="modificar=true; abrirModal(art)"  class="btn btn-warning">Editar</button>         
                     </th>
                     <th  > 
                     <button  @click="eliminar(art.id)"  class="btn btn-danger">Eliminar</button>         
@@ -94,14 +94,25 @@
               const api = await axios.delete('/articulos/'+id);              
                 this.listar();
           },
+          async guardar(id){
+            if(this.modificar) {
+                const res=await axios.put('/articulos/' +this.id, this.articulo);  
+            }else{
+                const res=await axios.post('/articulos', this.articulo);                
+            }
+            this.cerrarModal();
+            this.listar();
+          },
         abrirModal(data={}) {
                 this.modal = 1;
                 if(this.modificar){
+                    this.id= data.id;
                     this.tituloModal= "Modificar articulo";
                     this.articulo.nombre = data.nombre;
                     this.articulo.descripcion = data.descripcion;
                     this.articulo.stock = data.stock;                    
                 }else{
+                    this.id=0;
                     this.tituloModal= "Crear articulo";
                     this.articulo.nombre = "";
                     this.articulo.descripcion = "";

@@ -2000,16 +2000,61 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         }, _callee2);
       }))();
     },
+    guardar: function guardar(id) {
+      var _this3 = this;
+
+      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee3() {
+        var res, _res;
+
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee3$(_context3) {
+          while (1) {
+            switch (_context3.prev = _context3.next) {
+              case 0:
+                if (!_this3.modificar) {
+                  _context3.next = 6;
+                  break;
+                }
+
+                _context3.next = 3;
+                return axios.put('/articulos/' + _this3.id, _this3.articulo);
+
+              case 3:
+                res = _context3.sent;
+                _context3.next = 9;
+                break;
+
+              case 6:
+                _context3.next = 8;
+                return axios.post('/articulos', _this3.articulo);
+
+              case 8:
+                _res = _context3.sent;
+
+              case 9:
+                _this3.cerrarModal();
+
+                _this3.listar();
+
+              case 11:
+              case "end":
+                return _context3.stop();
+            }
+          }
+        }, _callee3);
+      }))();
+    },
     abrirModal: function abrirModal() {
       var data = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
       this.modal = 1;
 
       if (this.modificar) {
+        this.id = data.id;
         this.tituloModal = "Modificar articulo";
         this.articulo.nombre = data.nombre;
         this.articulo.descripcion = data.descripcion;
         this.articulo.stock = data.stock;
       } else {
+        this.id = 0;
         this.tituloModal = "Crear articulo";
         this.articulo.nombre = "";
         this.articulo.descripcion = "";
@@ -38876,8 +38921,16 @@ var render = function() {
             _vm._v(" "),
             _c(
               "button",
-              { staticClass: "btn btn-primary", attrs: { type: "button" } },
-              [_vm._v("Save changes")]
+              {
+                staticClass: "btn btn-primary",
+                attrs: { type: "button" },
+                on: {
+                  click: function($event) {
+                    return _vm.guardar()
+                  }
+                }
+              },
+              [_vm._v("Guardar")]
             )
           ])
         ])
